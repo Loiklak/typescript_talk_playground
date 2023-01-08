@@ -1,7 +1,7 @@
 import { TranslationKeysExtractor } from "./main";
 import { Equal, Expect } from "./utils";
 
-namespace test {
+namespace shouldExtractKeyOfSimpleItem {
   const input = {
     translationKey: "Traduction fr",
   } as const;
@@ -11,7 +11,7 @@ namespace test {
   type test = Expect<Equal<TranslationKeysExtractor<typeof input>, expected>>;
 }
 
-namespace test {
+namespace shouldExtractOfAnotherSimpleItem {
   const input = {
     toto: "Traduction fr",
   } as const;
@@ -21,7 +21,7 @@ namespace test {
   type test = Expect<Equal<TranslationKeysExtractor<typeof input>, expected>>;
 }
 
-namespace test {
+namespace shouldExtractKeysOfItemWithMultipleKeys {
   const input = {
     translationKey: "Traduction fr",
     toto: "traduction fr 2",
@@ -34,7 +34,7 @@ namespace test {
   type test = Expect<Equal<output, expected>>;
 }
 
-namespace test {
+namespace shouldExtractASingleNestedKey {
   const input = {
     toto: {
       tata: "Traduction",
@@ -44,6 +44,35 @@ namespace test {
   type output = TranslationKeysExtractor<typeof input>;
 
   type expected = "toto.tata";
+
+  type test = Expect<Equal<output, expected>>;
+}
+
+namespace shouldExtractNestedKeyAndSimpleKey {
+  const input = {
+    toto: {
+      tata: "Traduction",
+    },
+    translationKey: "traduction 2",
+  } as const;
+
+  type output = TranslationKeysExtractor<typeof input>;
+
+  type expected = "toto.tata" | "translationKey";
+
+  type test = Expect<Equal<output, expected>>;
+}
+
+namespace shouldExtractDoubleNestedKey {
+  const input = {
+    toto: {
+      tata: { titi: "Traduction" },
+    },
+  } as const;
+
+  type output = TranslationKeysExtractor<typeof input>;
+
+  type expected = "toto.tata.titi";
 
   type test = Expect<Equal<output, expected>>;
 }
