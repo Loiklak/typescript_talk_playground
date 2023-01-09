@@ -18,5 +18,5 @@ export type TranslationKeysExtractor<TTranslations extends TranslationShape> =
       ? TTranslations[Key] extends TranslationShape
         ? Concat<Key, TranslationKeysExtractor<TTranslations[Key]>>
         : never
-      : never];
+      : never]: never;
   };
